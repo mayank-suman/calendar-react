@@ -1,0 +1,15 @@
+.inline {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.yearsDropdown {
+    margin-left: 20px;
+    float: left;
+    width: 80px;
+}
+
+.monthDropdown {
+    width: 25%;
+    float: left;
+}
