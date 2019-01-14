@@ -26,19 +26,24 @@ export default class Calender extends Component {
     }
 
     renderDays = (selectedMonthId, selectedYear) => {
-        const currentMonthDays = getDaysInMonth(selectedMonthId, selectedYear).map((d, did) => {
-            return (
-                <div 
-                    key={did}
-                    className='border-left text-center'
-                    style={{display: 'inline-block', width: 'calc(100% / 7)'}}
-                >
-                    {isValidDate(d) ? new formatDate(d).getDatePart('date') : d}
-                </div> 
-            )
+        let daysToRender = [];
+        const allDaysObj = getDaysInMonth(selectedMonthId, selectedYear);
+        Object.entries(allDaysObj).forEach(([dpIdx, dateType]) => {
+            dateType.forEach((d, did) => {
+                let greyColor = dpIdx !== 'currentMonthDays' ? '#999' : '';
+                daysToRender.push(
+                    <div
+                        key={`${dpIdx}_${did}`}
+                        className='border-left text-center'
+                        style={{ display: 'inline-block', width: 'calc(100% / 7)', color: greyColor }}
+                    >
+                        {isValidDate(d) ? new formatDate(d).getDatePart('date') : d}
+                    </div>
+                )
+            })
         });
 
-        return currentMonthDays;
+        return daysToRender;
     }
 
     render () {
@@ -57,7 +62,6 @@ export default class Calender extends Component {
                 <div style={{width: '100%'}}>
                     {selectedMonthId >= 0 && selectedYear >= 0 ? this.renderDays(selectedMonthId, selectedYear) : null}
                 </div>
-
             </div>
         )
     }

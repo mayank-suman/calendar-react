@@ -110,7 +110,7 @@ export const getDaysInMonth = (month, year) => {
     }
 
     var NextMonthDays = getNextMonthDays(PreviousMonthDays, days);
-    totalDaysToReturn = [...PreviousMonthDays, ...days, ...NextMonthDays];
+    totalDaysToReturn = {PreviousMonthDays, currentMonthDays : days, NextMonthDays};
     //console.log(totalDaysToReturn);
     return totalDaysToReturn;
 };
