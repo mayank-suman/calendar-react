@@ -8,10 +8,12 @@ export default class Header extends Component {
         return (
             <div className='monthsDropdown'>
                 <MonthsChanger
-                    onMonthChange={this.props.onMonthChange} 
+                    onMonthChange={this.props.onMonthChange}
+                    selectedYear={this.props.selectedYear}
                 />
                 <YearChanger 
                     onYearChange={this.props.onYearChange}
+                    selectedMonthId={this.props.selectedMonthId}
                 />
             </div>
         )

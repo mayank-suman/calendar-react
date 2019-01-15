@@ -1,8 +1,9 @@
 import React, {Component} from "react";
+import { withRouter } from 'react-router-dom'
 
 import { lastTenYears, formatDate} from "../../calendar_data";
 
-export default class YearChanger extends Component {
+class YearChanger extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -11,8 +12,11 @@ export default class YearChanger extends Component {
     }
 
     handleSelect = (ev) => {
-        this.setState({selectedYear : ev.target.value});
-        this.props.onYearChange(parseInt(ev.target.value));
+        let newVal = ev.target.value;
+        this.setState({selectedYear : newVal});
+        this.props.onYearChange(parseInt(newVal));
+        this.props.history.push(`/${this.props.selectedMonthId}/${newVal}`);
+
     }
 
     renderYears = () => {
@@ -45,3 +49,5 @@ export default class YearChanger extends Component {
         )
     }
 }
+
+export default withRouter(YearChanger);

@@ -1,8 +1,9 @@
 import React, { Component } from "react";
+import { withRouter } from 'react-router-dom';
 
 import { months, formatDate, getlastMonth, getNextMonth } from "../../calendar_data";
 
-export default class MonthsChanger extends Component {
+class MonthsChanger extends Component {
     constructor(props) {
         super(props);
 
@@ -19,6 +20,7 @@ export default class MonthsChanger extends Component {
         let nextMonth = parseInt(getNextMonth(currentMonthId));
         this.setState({ currentMonthId: nextMonth });
         this.props.onMonthChange(nextMonth);
+        this.props.history.push(`/${nextMonth}/${this.props.selectedYear}`);
     }
 
     handlePrevClick = () => {
@@ -26,6 +28,7 @@ export default class MonthsChanger extends Component {
         let lastMonth = parseInt(getlastMonth(currentMonthId));
         this.setState({ currentMonthId: lastMonth });
         this.props.onMonthChange(lastMonth);
+        this.props.history.push(`/${lastMonth}/${this.props.selectedYear}`);
     }
 
     renderMonths = () => {
@@ -76,3 +79,5 @@ export default class MonthsChanger extends Component {
         )
     }
 }
+
+export default withRouter(MonthsChanger);
