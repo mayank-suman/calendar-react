@@ -1,9 +1,8 @@
 import React, { Component } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
-import { getDaysInMonth, formatDate, isValidDate } from "../calendar_data";
-import Weeks from "./weeks";
-import Header from "./header/index";
+import Days from "./days";
+import { formatDate } from "../calendar_data";
 
 export default class Calender extends Component {
     constructor(props) {
@@ -11,60 +10,32 @@ export default class Calender extends Component {
         this.state = { selectedMonthId: null, selectedYear: null };
     }
 
-    handleMonthChange = (selectedMonthId) => {
-        this.setState({ selectedMonthId });
-    }
-
-    handleYearChange = (selectedYear) => {
-        this.setState({ selectedYear });
-    }
-
-    _renderDays(selectedMonthId, selectedYear) {
-        console.log(selectedMonthId, selectedYear);
-        let daysToRender = [];
-        const allDaysObj = getDaysInMonth(selectedMonthId, selectedYear);
-        Object.entries(allDaysObj).forEach(([dpIdx, dateType]) => {
-            dateType.forEach((d, did) => {
-                let greyColor = dpIdx !== 'currentMonthDays' ? '#999' : '';
-                daysToRender.push(
-                    <div key={`${dpIdx}_${did}`} className='border-left text-center' style={{ display: 'inline-block', width: 'calc(100% / 7)', color: greyColor }}>
-                        {isValidDate(d) ? new formatDate(d).getDatePart('date') : d}
-                    </div>);
-            });
+    componentWillMount() {
+        let defaultYear = new formatDate().getDatePart('year');
+        let defaultMonthId = new formatDate().getDatePart('month').id;
+        this.setState({
+            selectedYear: defaultYear,
+            selectedMonthId: defaultMonthId
         });
-        return daysToRender;
     }
-
-    renderDaysDefault = () => {
-        const { selectedMonthId, selectedYear } = this.state;
-        return this._renderDays(selectedMonthId, selectedYear)
-    };
-
-    renderDaysWithParam = ({ match }) => {
-        return this._renderDays(match.params.selectedMonthId, match.params.selectedYear)
-    };
 
     render() {
         const { selectedMonthId, selectedYear } = this.state;
+        const url = `/${selectedMonthId}/${selectedYear}`;
+        //console.log(this.state, url, selectedMonthId != null && selectedYear != null);
         return (
             <div
                 style={{ width: 'calc(100% - 10px)', margin: '5px' }}
                 className='border-bottom'
             >
-                <Header
-                    onMonthChange={this.handleMonthChange}
-                    onYearChange={this.handleYearChange}
-                    selectedMonthId={selectedMonthId}
-                    selectedYear={selectedYear}
-                />
-                <br clear='both' />
-                <Weeks />
                 <div style={{ width: '100%' }}>
                     <Switch>
-                        <Route exact path="/" component={this.renderDaysDefault} />
-                        <Route path="/:selectedMonthId/:selectedYear" component={this.renderDaysWithParam} />
+                        <Route exact path="/" render={() => (
+                            selectedMonthId != null && selectedYear != null ?
+                                (<Redirect to={url} />) : null
+                        )} />
+                        <Route path="/:selectedMonthId/:selectedYear" component={Days} />
                     </Switch>
-                    {/* selectedMonthId >= 0 && selectedYear >= 0 ? this.renderDaysDefault(selectedMonthId, selectedYear) : null */}
                 </div>
             </div>
         )

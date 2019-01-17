@@ -1,50 +1,38 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { withRouter } from 'react-router-dom'
 
-import { lastTenYears, formatDate} from "../../calendar_data";
+import { lastTenYears } from "../../calendar_data";
 
 class YearChanger extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            selectedYear : null 
-        }
     }
 
     handleSelect = (ev) => {
         let newVal = ev.target.value;
-        this.setState({selectedYear : newVal});
         this.props.onYearChange(parseInt(newVal));
         this.props.history.push(`/${this.props.selectedMonthId}/${newVal}`);
-
     }
 
-    renderYears = () => {
-        return lastTenYears().map(y => {
-            return (
-                <option key={y} value={y} >{y}</option>
-            )
-        });
-    }
+    renderYears = () => lastTenYears().map(y => <option key={y} value={y} >{y}</option>);
 
-    componentWillMount() {
-        let defaultYear = new formatDate().getDatePart('year');
-        this.setState({selectedYear : defaultYear});
-        this.props.onYearChange(parseInt(defaultYear));
-    }    
-
-    render () {
-        const selectedYear = this.state.selectedYear;
+    render() {
+        const selectedYear = this.props.selectedYear;
+        //console.log('year changer', this.props);
 
         return (
             <div className='input-group yearsDropdown'>
-                <select 
-                    className='custom-select'
-                    onChange={this.handleSelect} 
-                    value={selectedYear}    
-                >
-                    {this.renderYears()}
-                </select>
+                {
+                    selectedYear ? 
+                        <select
+                            className='custom-select'
+                            onChange={this.handleSelect}
+                            value={selectedYear}
+                        >
+                            {this.renderYears()}
+                        </select>
+                    : null
+                }
             </div>
         )
     }

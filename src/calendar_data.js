@@ -194,5 +194,5 @@ export const getNextMonth = (month) => {
     }
 }
 
-console.log(getlastMonth(0));
+//console.log(getlastMonth(0));
 

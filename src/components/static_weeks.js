@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { weekDays } from "../calendar_data";
 
 export default class Weeks extends Component {
@@ -10,10 +10,10 @@ export default class Weeks extends Component {
     renderWeeks = () => {
         return weekDays.map(w => {
             return (
-                <div 
-                    className='border-bottom border-top border-left text-center' 
-                    style={this.styles} 
-                    key={w.number} 
+                <div
+                    className='border-bottom border-top border-left text-center'
+                    style={this.styles}
+                    key={w.number}
                 >
                     {w.name}
                 </div>
@@ -21,10 +21,10 @@ export default class Weeks extends Component {
         })
     }
 
-    render () {
+    render() {
         return (
             <div>
-                { this.renderWeeks() }
+                {this.renderWeeks()}
             </div>
         )
     }
