@@ -19,11 +19,9 @@ class YearChanger extends Component {
     render() {
         const selectedYear = this.props.selectedYear;
         //console.log('year changer', this.props);
-
         return (
             <div className='input-group yearsDropdown'>
-                {
-                    selectedYear ? 
+                {selectedYear ? 
                         <select
                             className='custom-select'
                             onChange={this.handleSelect}
@@ -31,8 +29,7 @@ class YearChanger extends Component {
                         >
                             {this.renderYears()}
                         </select>
-                    : null
-                }
+                : null}
             </div>
         )
     }

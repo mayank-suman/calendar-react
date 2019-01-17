@@ -8,24 +8,39 @@ class MonthsChanger extends Component {
         super(props);
     }
 
-    handleSelectChange = (ev) => {
-        this.props.onMonthChange(parseInt(ev.target.value));
+    // Helper function to update the Global History obj
+    pushHistory(month) {
+        this.props.history.push(`/${month}/${this.props.selectedYear}`);
+    }
+
+    // Helper function to update the month property and history 
+    updateMonthProp(type) {
+        let { selectedMonthId } = this.props;
+        selectedMonthId = Number(selectedMonthId);
+        let newMonth;
+        if (type === 'next') {
+            newMonth = parseInt(getNextMonth(selectedMonthId)); 
+        } else if (type === 'prev') {
+            newMonth = parseInt(getlastMonth(selectedMonthId)); 
+        }  else {
+            newMonth = selectedMonthId
+        }
+        this.props.onMonthChange(newMonth);
+        this.pushHistory(newMonth);
     }
 
     handleNextClick = () => {
-        let { selectedMonthId } = this.props;
-        selectedMonthId = Number(selectedMonthId);
-        let nextMonth = parseInt(getNextMonth(selectedMonthId));
-        this.props.onMonthChange(nextMonth);
-        this.props.history.push(`/${nextMonth}/${this.props.selectedYear}`);
+        this.updateMonthProp('next');
     }
 
     handlePrevClick = () => {
-        let { selectedMonthId } = this.props;
-        selectedMonthId = Number(selectedMonthId);
-        let lastMonth = parseInt(getlastMonth(selectedMonthId));
-        this.props.onMonthChange(lastMonth);
-        this.props.history.push(`/${lastMonth}/${this.props.selectedYear}`);
+        this.updateMonthProp('prev');
+    }
+
+    handleSelectChange = (ev) => {
+        let month = ev.target.value;
+        this.props.onMonthChange(parseInt(month));
+        this.pushHistory(month);
     }
 
     renderMonths = () => months.map(m => <option key={m.id} value={m.id} >{m.name}</option>);

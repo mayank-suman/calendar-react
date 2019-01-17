@@ -1,3 +1,4 @@
+// Week days array
 export const weekDays = [{
     number: 0,
     name: 'Sunday'
@@ -28,6 +29,7 @@ export const weekDays = [{
 },
 ];
 
+// Monthe array
 export const months = [{
     id: 0,
     name: 'January',
@@ -90,20 +92,21 @@ export const months = [{
 }
 ];
 
+// Function to check valid date
 export const isValidDate = (d) => {
     return d instanceof Date && !isNaN(d);
 }
 
+// Function to get current data
 export const currentDate = () => new Date();
 
-
+// Function to get days in a month including previous and next months overlapping date
 export const getDaysInMonth = (month, year) => {
     // Since no month has fewer than 28 days
     var totalDaysToReturn = [];
     var date = new Date(year, month, 1);
     var days = [];
     var PreviousMonthDays = getPrevMonthDays(month, year);
-    //  console.log('month', month, 'date.getMonth()', date.getMonth())
     while (date.getMonth() === month) {
         days.push(new Date(date));
         date.setDate(date.getDate() + 1);
@@ -111,7 +114,6 @@ export const getDaysInMonth = (month, year) => {
 
     var NextMonthDays = getNextMonthDays(PreviousMonthDays, days);
     totalDaysToReturn = {PreviousMonthDays, currentMonthDays : days, NextMonthDays};
-    //console.log(totalDaysToReturn);
     return totalDaysToReturn;
 };
 
@@ -142,6 +144,8 @@ function getNextMonthDays(prev, current) {
     }
 }
 
+
+// Helper class to get date parts (day, month, date, year)
 export class formatDate {
     constructor(date) {
         this.date = date || currentDate();
@@ -164,6 +168,7 @@ export class formatDate {
     }
 }
 
+// function to get last ten year
 export const lastTenYears = () => {
     let currentYear = new formatDate(currentDate()).getDatePart('year');
     let yearsArr = [];
@@ -178,6 +183,7 @@ export const lastTenYears = () => {
     return yearsArr;
 }
 
+// Function to get last month
 export const getlastMonth = (month) => {
     if (month === 0) {
         return 11;
@@ -186,6 +192,7 @@ export const getlastMonth = (month) => {
     }
 }
 
+// Function to get next month
 export const getNextMonth = (month) => {
     if (month === 11) {
         return 0;
@@ -193,6 +200,3 @@ export const getNextMonth = (month) => {
         return (month + 1)
     }
 }
-
-//console.log(getlastMonth(0));
-

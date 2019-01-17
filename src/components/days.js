@@ -11,14 +11,6 @@ class Days extends Component {
         this.state = { selectedMonthId: null, selectedYear: null };
     }
 
-    componentWillMount() {
-        let { selectedMonthId, selectedYear } = this.props.match.params;
-        this.setState({
-            selectedMonthId: selectedMonthId, 
-            selectedYear: selectedYear
-        });
-    }
-
     handleMonthChange = (selectedMonthId) => {
         this.setState({ selectedMonthId });
     }
@@ -27,21 +19,33 @@ class Days extends Component {
         this.setState({ selectedYear });
     }
 
-    render() {
-        let { selectedMonthId, selectedYear } = this.props.match.params;
+    // Helper function to render days
+    renderDaysHelper(selectedMonthId, selectedYear) {
         let daysToRender = [];
         const allDaysObj = getDaysInMonth(Number(selectedMonthId), Number(selectedYear));
-        console.log(selectedMonthId, selectedYear);
-        console.log('allDaysObj', allDaysObj);
+        //console.log(selectedMonthId, selectedYear);
+        //console.log('allDaysObj', allDaysObj);
         Object.entries(allDaysObj).forEach(([dpIdx, dateType]) => {
             dateType.forEach((d, did) => {
                 let greyColor = dpIdx !== 'currentMonthDays' ? '#999' : '';
-                daysToRender.push(
-                    <div key={`${dpIdx}_${did}`} className='border-left text-center' style={{ display: 'inline-block', width: 'calc(100% / 7)', color: greyColor }}>
-                        {isValidDate(d) ? new formatDate(d).getDatePart('date') : d}
-                    </div>);
+                daysToRender.push(<div key={`${dpIdx}_${did}`} className='border-left text-center' style={{ display: 'inline-block', width: 'calc(100% / 7)', color: greyColor }}>
+                    {isValidDate(d) ? new formatDate(d).getDatePart('date') : d}
+                </div>);
             });
         });
+        return daysToRender;
+    }
+
+    componentWillMount() {
+        let { selectedMonthId, selectedYear } = this.props.match.params;
+        this.setState({
+            selectedMonthId: selectedMonthId, 
+            selectedYear: selectedYear
+        });
+    }
+
+    render() {
+        let { selectedMonthId, selectedYear } = this.props.match.params;
         return (
             <div>
                 <div className="header">
@@ -55,11 +59,10 @@ class Days extends Component {
                         selectedYear={selectedYear}
                         selectedMonthId={selectedMonthId}
                     />
-
                     <br clear='both' />
                 </div>
                 <Weeks />
-                {daysToRender}
+                {this.renderDaysHelper(selectedMonthId, selectedYear)}
             </div>
         );
     }
